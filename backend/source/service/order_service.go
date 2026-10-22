@@ -101,7 +101,7 @@ func (o *OrderService) Create(param dto.OrderCreateRequest) model.Response {
 
 		order := model.SalesOrder{
 			Customer: param.Customer,
-			Status:   "craeted",
+			Status:   "CREATED",
 			Total:    totalOrder,
 		}
 		if err := tx.Create(&order).Error; err != nil {
@@ -125,8 +125,12 @@ func (o *OrderService) Create(param dto.OrderCreateRequest) model.Response {
 		}
 
 		order.Items = orderItmes
-		resp.Metadata.Message = "OK"
-		resp.Data = order
+		resp = model.Response{
+			Metadata: model.MetadataResponse{
+				Message: "OK",
+			},
+			Data: order,
+		}
 
 		return nil
 	})

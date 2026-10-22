@@ -25,7 +25,7 @@ func NewOrderController(router *gin.RouterGroup) *OrderController {
 	}
 
 	order := c.router.Group("/orders")
-	order.POST("/", c.Create)
+	order.POST("", c.Create)
 	order.POST("/:id/cancel", c.Cancel)
 	order.GET("/:id", c.GetDetail)
 

@@ -25,8 +25,8 @@ func NewProductController(router *gin.RouterGroup) *ProductController {
 	}
 
 	product := c.router.Group("/products")
-	product.POST("/", c.Create)
-	product.GET("/", c.Search)
+	product.POST("", c.Create)
+	product.GET("", c.Search)
 	product.DELETE("/:id", c.Delete)
 	product.PUT("/:id", c.Update)
 	product.POST("/:id/stock", c.AdjustStock)

@@ -21,13 +21,9 @@ services:
       dockerfile: Dockerfile
     container_name: stockflow_api
     ports:
-      - "8080:8080" 
+      - "8000:8000" 
     environment:
-      DB_HOST: db
-      DB_USER: root
-      DB_PASSWORD: password
-      DB_NAME: stockflow
-      DB_PORT: 5432
+      PG_URI: "postgres://root:password@db:5432/stockflow?sslmode=disable"
     depends_on:
       - db
     restart: unless-stopped
