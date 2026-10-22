@@ -1,0 +1,296 @@
+definitions:
+  dto.OrderCreateRequest:
+    properties:
+      customer:
+        type: string
+      items:
+        items:
+          $ref: '#/definitions/dto.OrderItemRequest'
+        minItems: 1
+        type: array
+    required:
+    - customer
+    - items
+    type: object
+  dto.OrderItemRequest:
+    properties:
+      qty:
+        type: integer
+      sku:
+        type: string
+    required:
+    - qty
+    - sku
+    type: object
+  dto.ProductRequest:
+    properties:
+      name:
+        type: string
+      price:
+        minimum: 0
+        type: integer
+      sku:
+        type: string
+    required:
+    - name
+    - price
+    - sku
+    type: object
+  dto.ProductUpdateRequest:
+    properties:
+      is_active:
+        type: boolean
+      name:
+        type: string
+      price:
+        minimum: 0
+        type: integer
+      sku:
+        type: string
+    type: object
+  dto.StockMovementRequest:
+    properties:
+      note:
+        type: string
+      qty:
+        type: integer
+      type:
+        enum:
+        - in
+        - out
+        type: string
+    required:
+    - qty
+    - type
+    type: object
+  model.MetadataResponse:
+    properties:
+      message:
+        type: string
+      status:
+        type: boolean
+      time_execution:
+        type: string
+    type: object
+  model.PaginatedResponse:
+    properties:
+      data: {}
+      limit:
+        type: integer
+      page:
+        type: integer
+      total:
+        type: integer
+    type: object
+info:
+  contact: {}
+  description: stockflow documentation
+  title: stockflow
+  version: "1.0"
+paths:
+  /orders:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: param
+        in: body
+        name: parameter
+        required: true
+        schema:
+          $ref: '#/definitions/dto.OrderCreateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: OK
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/model.MetadataResponse'
+            type: object
+      tags:
+      - order
+  /orders/{id}:
+    get:
+      parameters:
+      - description: page
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              ' data':
+                $ref: '#/definitions/model.PaginatedResponse'
+              metadata:
+                $ref: '#/definitions/model.MetadataResponse'
+            type: object
+      tags:
+      - order
+  /orders/{id}/cancel:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: param
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: OK
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/model.MetadataResponse'
+            type: object
+      tags:
+      - order
+  /products:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: incase-sensitive
+        in: query
+        name: search
+        type: string
+      - description: page
+        in: query
+        name: page
+        type: integer
+      - description: limit
+        in: query
+        name: limit
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            properties:
+              ' data':
+                $ref: '#/definitions/model.PaginatedResponse'
+              metadata:
+                $ref: '#/definitions/model.MetadataResponse'
+            type: object
+      tags:
+      - product
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: param
+        in: body
+        name: parameter
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ProductRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: OK
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/model.MetadataResponse'
+            type: object
+      tags:
+      - product
+  /products/{id}:
+    delete:
+      parameters:
+      - description: product id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+      tags:
+      - product
+    put:
+      consumes:
+      - application/json
+      parameters:
+      - description: product id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: parameter
+        in: body
+        name: parameter
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ProductUpdateRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: OK
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/model.MetadataResponse'
+            type: object
+      tags:
+      - product
+  /products/{id}/movement:
+    get:
+      parameters:
+      - description: product id
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: ""
+      tags:
+      - product
+  /products/{id}/stock:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: product id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: parameter
+        in: body
+        name: parameter
+        required: true
+        schema:
+          $ref: '#/definitions/dto.StockMovementRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: OK
+          schema:
+            properties:
+              metadata:
+                $ref: '#/definitions/model.MetadataResponse'
+            type: object
+      tags:
+      - product
+swagger: "2.0"
