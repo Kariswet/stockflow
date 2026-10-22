@@ -1,0 +1,1 @@
+I spend 13 hours for this project. and honestly if you ask what i want to improve, to be honest the frontend skill. Because almost 2 year of my career i spend for developing backend.
